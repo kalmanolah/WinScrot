@@ -1,5 +1,7 @@
 WinScrot (.NET edition), by Kalman Olah
 
+Download: https://github.com/downloads/kalmanolah/WinScrot/WinScrot.exe
+
 Usage: WinScrot [-d DELAY] [-c] [-q QUALITY] [-t THUMBSIZE] [FILENAME.EXT]
 
     -d INT       Delay before the screenshot is taken, in seconds. Default: 0. Min: 0. Optional.
