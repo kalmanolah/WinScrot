@@ -10,7 +10,7 @@ using System.Text.RegularExpressions;
 namespace WinScrot
 {
     /*
-     * WinScrot (.NET 4.0 edition), by Kalman Olah
+     * WinScrot (.NET edition), by Kalman Olah
      * 
      * Usage: WinScrot [-d DELAY] [-c] [-q QUALITY] [-t THUMBSIZE] [FILENAME.EXT]
      * 
