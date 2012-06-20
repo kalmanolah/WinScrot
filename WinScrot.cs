@@ -124,14 +124,11 @@ namespace WinScrot
         {
             if (varDelay > 0)
             {
-                Console.Out.Write("Taking screenshot in " + varDelay + "...");
+                Console.Write("Taking screenshot in " + varDelay + "...");
                 System.Timers.Timer tmp = new System.Timers.Timer(1000);
                 tmp.Elapsed += new ElapsedEventHandler(timerTick);
                 tmp.Enabled = true;
-                while (true)
-                {
-                    Console.ReadLine();
-                }
+                while (tmp.Enabled) { }
             }
             else
             {
@@ -157,7 +154,7 @@ namespace WinScrot
                 int tmpHeight = (tmpRectangle.Height * varThumbsize) / 100;
                 Bitmap tmpBitmap2 = new Bitmap(tmpWidth, tmpHeight, PixelFormat.Format32bppArgb);
                 Graphics tmpGraphics2 = Graphics.FromImage(tmpBitmap2);
-                tmpGraphics2.DrawImage(tmpBitmap2, 0, 0, tmpWidth, tmpHeight);
+                tmpGraphics2.DrawImage(tmpBitmap, 0, 0, tmpWidth, tmpHeight);
                 tmpBitmap = tmpBitmap2;
                 tmpGraphics2.Dispose();
             }
@@ -187,8 +184,7 @@ namespace WinScrot
                 tmpBitmap.Save(varFilename, tmpFormat);
             }
             tmpBitmap.Dispose();
-            Console.Write(Environment.NewLine + "Screenshot saved to \"" + varFilename + "\"");
-            Environment.Exit(0);
+            Console.Write("Screenshot saved to \"" + varFilename + "\"");
         }
 
         static void timerTick(object sender, ElapsedEventArgs e)
@@ -196,8 +192,9 @@ namespace WinScrot
            varDelay--;
            if (varDelay == 0)
            {
-               ((System.Timers.Timer)sender).Enabled = false;
+               Console.Write(Environment.NewLine);
                handleScrot();
+               ((System.Timers.Timer)sender).Enabled = false;
            }
            else if(varCountdown)
            {
