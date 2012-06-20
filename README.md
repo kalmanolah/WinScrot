@@ -15,7 +15,7 @@ Usage: WinScrot [-d DELAY] [-c] [-q QUALITY] [-t THUMBSIZE] [FILENAME.EXT]
 -
 
     WinScrot - A command-line screenshotting utility
-    Copyright (C) 2012  Kalman Olah
+    Copyright (C) 2012 Kalman Olah
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
