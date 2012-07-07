@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Reflection;
+using System.Threading;
 using System.Timers;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
@@ -33,11 +34,8 @@ namespace WinScrot
                         try
                         {
                             int tmp = int.Parse(args[i + 1]);
+                            varDelay = tmp < 0 ? 0 : tmp;
                             args[i + 1] = null;
-                            if (tmp >= 0)
-                            {
-                                varDelay = tmp;
-                            }
                         }
                         catch { }
                         break;
@@ -46,11 +44,8 @@ namespace WinScrot
                         try
                         {
                             int tmp = int.Parse(args[i + 1]);
+                            varDelay = tmp < 0 ? 0 : tmp;
                             args[i + 1] = null;
-                            if (tmp >= 0)
-                            {
-                                varDelay = tmp;
-                            }
                         }
                         catch { }
                         break;
@@ -58,11 +53,8 @@ namespace WinScrot
                         try
                         {
                             int tmp = int.Parse(args[i + 1]);
+                            varQuality = (tmp > 0 && tmp <= 100) ? tmp : 0;
                             args[i + 1] = null;
-                            if (tmp > 0 && tmp <= 100)
-                            {
-                                varQuality = tmp;
-                            }
                         }
                         catch { }
                         break;
@@ -70,11 +62,8 @@ namespace WinScrot
                         try
                         {
                             int tmp = int.Parse(args[i + 1]);
+                            varThumbsize = (tmp > 0 && tmp <= 100) ? tmp : 100;
                             args[i + 1] = null;
-                            if (tmp > 0 && tmp <= 100)
-                            {
-                                varThumbsize = tmp;
-                            }
                         }
                         catch { }
                         break;
@@ -91,11 +80,7 @@ namespace WinScrot
                                     tmp = tmp.Replace("$dt." + tmp3 + "$", DateTime.Now.ToString(tmp3));
                                 }
                             }
-                            FileInfo tmp4 = new FileInfo(tmp);
-                            if (tmp4.Directory.Exists)
-                            {
-                                varFilename = tmp;
-                            }
+                            if (new FileInfo(tmp).Directory.Exists) varFilename = tmp;
                         }
                         catch { }
                         break;
@@ -126,7 +111,7 @@ namespace WinScrot
             {
                 tmpRectangle = Rectangle.Union(tmpRectangle, tmpScreen.Bounds);
             }
-            Bitmap tmpBitmap = new Bitmap(tmpRectangle.Width, tmpRectangle.Height,PixelFormat.Format32bppArgb);
+            Bitmap tmpBitmap = new Bitmap(tmpRectangle.Width, tmpRectangle.Height, PixelFormat.Format32bppArgb);
             using (Graphics tmpGraphics = Graphics.FromImage(tmpBitmap))
             {
                 tmpGraphics.CopyFromScreen(tmpRectangle.X, tmpRectangle.Y, 0, 0, tmpRectangle.Size, CopyPixelOperation.SourceCopy);
@@ -171,29 +156,23 @@ namespace WinScrot
         }
 
         static void timerTick(object sender, ElapsedEventArgs e)
-       {
-           varDelay--;
-           if (varDelay == 0)
-           {
-               Console.Write(Environment.NewLine);
-               handleScrot();
-               ((System.Timers.Timer)sender).Enabled = false;
-           }
-           else if(varCountdown)
-           {
-               Console.Write(" " + varDelay + "...");
-           }
-       }
-        
+        {
+            varDelay--;
+            if (varCountdown) Console.Write(" " + varDelay + "...");
+            if (varDelay == 0)
+            {
+                Console.Write(Environment.NewLine);
+                handleScrot();
+                ((System.Timers.Timer)sender).Enabled = false;
+            }
+        }
+
         static ImageCodecInfo getEncoder(ImageFormat format)
         {
             ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();
             foreach (ImageCodecInfo codec in codecs)
             {
-                if (codec.FormatID == format.Guid)
-                {
-                    return codec;
-                }
+                if (codec.FormatID == format.Guid) return codec;
             }
             return null;
         }
