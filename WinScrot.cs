@@ -16,7 +16,7 @@ namespace WinScrot
         static bool varCountdown = false;
         static int varQuality = 0;
         static int varThumbsize = 100;
-        static string varFilename = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "WinScrot-" + DateTime.Now.ToString("dd.MM.yyyy--HH.mm.ss") + ".png");
+        static string varFilename = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "WinScrot-$dt.dd.MM.yyyy--HH.mm.ss$.png");
 
         static void Main(string[] args)
         {
@@ -71,15 +71,6 @@ namespace WinScrot
                         try
                         {
                             string tmp = args[i];
-                            while (Regex.IsMatch(tmp, @"\$dt\.(.*)\$"))
-                            {
-                                Match tmp2 = Regex.Match(tmp, @"\$dt\.(.*)\$");
-                                if (tmp2.Success)
-                                {
-                                    string tmp3 = tmp2.Groups[1].Value;
-                                    tmp = tmp.Replace("$dt." + tmp3 + "$", DateTime.Now.ToString(tmp3));
-                                }
-                            }
                             if (new FileInfo(tmp).Directory.Exists) varFilename = tmp;
                         }
                         catch { }
@@ -138,6 +129,15 @@ namespace WinScrot
             else if (varFilename.ToLower().EndsWith("gif"))
             {
                 tmpFormat = ImageFormat.Gif;
+            }
+            while (Regex.IsMatch(varFilename, @"\$dt\.(.*)\$"))
+            {
+                Match tmpMatch = Regex.Match(varFilename, @"\$dt\.(.*)\$");
+                if (tmpMatch.Success)
+                {
+                    string tmpValue = tmpMatch.Groups[1].Value;
+                    varFilename = varFilename.Replace("$dt." + tmpValue + "$", DateTime.Now.ToString(tmpValue));
+                }
             }
             if (varQuality > 0)
             {
