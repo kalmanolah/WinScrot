@@ -102,7 +102,7 @@ namespace WinScrot
             {
                 tmpRectangle = Rectangle.Union(tmpRectangle, tmpScreen.Bounds);
             }
-            Bitmap tmpBitmap = new Bitmap(tmpRectangle.Width, tmpRectangle.Height, PixelFormat.Format32bppArgb);
+            Bitmap tmpBitmap = new Bitmap(tmpRectangle.Width, tmpRectangle.Height, PixelFormat.Format24bppRgb);
             using (Graphics tmpGraphics = Graphics.FromImage(tmpBitmap))
             {
                 tmpGraphics.CopyFromScreen(tmpRectangle.X, tmpRectangle.Y, 0, 0, tmpRectangle.Size, CopyPixelOperation.SourceCopy);
@@ -111,7 +111,7 @@ namespace WinScrot
             {
                 int tmpWidth = (tmpRectangle.Width * varThumbsize) / 100;
                 int tmpHeight = (tmpRectangle.Height * varThumbsize) / 100;
-                Bitmap tmpBitmap2 = new Bitmap(tmpWidth, tmpHeight, PixelFormat.Format32bppArgb);
+                Bitmap tmpBitmap2 = new Bitmap(tmpWidth, tmpHeight, PixelFormat.Format24bppRgb);
                 Graphics tmpGraphics2 = Graphics.FromImage(tmpBitmap2);
                 tmpGraphics2.DrawImage(tmpBitmap, 0, 0, tmpWidth, tmpHeight);
                 tmpBitmap = tmpBitmap2;
